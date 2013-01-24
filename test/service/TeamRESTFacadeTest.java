@@ -10,7 +10,6 @@ import entities.Player;
 import entities.Team;
 import java.util.Collection;
 import java.util.List;
-import javax.ws.rs.core.Response;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,13 +23,13 @@ import static org.junit.Assert.*;
  */
 public class TeamRESTFacadeTest {
     
-    private TestTeam testTeam = new TestTeam();
+    private TeamTestHelper testTeam = new TeamTestHelper();
 
     private GenericType<Collection<Player>> genericType = new GenericType<Collection<Player>>(){};
     
     public TeamRESTFacadeTest() {
     }
-    
+   
     @BeforeClass
     public static void setUpClass() {
         System.out.println("Deploy App with PersistenceUnit set to PMDEV01 with schema drop and create option");
@@ -56,9 +55,9 @@ public class TeamRESTFacadeTest {
         System.out.println("create");
         Team entity = new Team();
         entity.setName("Dream Team");
-        TestTeam instance = new TestTeam();
-        instance.setUserAsPlayer();
-        ClientResponse result = instance.create_JSON(entity);
+        TeamTestHelper teamTestHelper = new TeamTestHelper();
+        teamTestHelper.setUser(TeamTestHelper.User.PLAYER);
+        ClientResponse result = teamTestHelper.create(entity);
         assertEquals(ClientResponse.Status.FORBIDDEN, result.getClientResponseStatus());
     }
 
@@ -70,11 +69,11 @@ public class TeamRESTFacadeTest {
         System.out.println("create");
         Team team = new Team();
         team.setName("Dream Team");
-        team.set
+        team.setUri("dreamteam");
         
-        TestTeam teamTestHelper = new TestTeam();
-        teamTestHelper.setUserAsManager();
-        ClientResponse result = teamTestHelper.create_JSON(team);
+        TeamTestHelper teamTestHelper = new TeamTestHelper();
+        teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
+        ClientResponse result = teamTestHelper.create(team);
         assertEquals(ClientResponse.Status.CREATED, result.getClientResponseStatus());
     }
 
@@ -170,7 +169,7 @@ public class TeamRESTFacadeTest {
     @Test
     public void testCount() {
         System.out.println("count");
-        TestTeam instance = new TestTeam();
+        TeamTestHelper instance = new TeamTestHelper();
         String expResult = "2";
         String result = instance.count();
         assertEquals(expResult, result);

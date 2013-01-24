@@ -84,10 +84,10 @@
                           wrap-jdbc-objects="false">
         <property name="serverName" value="localhost"/>
         <property name="portNumber" value="3306"/>
-        <property name="databaseName" value="playermanager"/>
+        <property name="databaseName" value="PMDEV01"/>
         <property name="User" value="root"/>
         <property name="Password" value=""/>
-        <property name="URL" value="jdbc:mysql://localhost:3306/playermanager?zeroDateTimeBehavior=convertToNull"/>
+        <property name="URL" value="jdbc:mysql://localhost:3306/PMDEV01?zeroDateTimeBehavior=convertToNull"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" pool-name="PlayerManagerPool" jndi-name="jdbc/playermanager"  object-type="user"/>

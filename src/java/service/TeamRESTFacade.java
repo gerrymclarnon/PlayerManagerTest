@@ -59,6 +59,7 @@ public class TeamRESTFacade {
     @DELETE
     @Path("{id}")
     @Transactional
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     public void remove(@PathParam("id") Long id) {
         Team entity = entityManager.getReference(Team.class, id);
         entityManager.remove(entity);
