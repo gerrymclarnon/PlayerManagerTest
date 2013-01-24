@@ -1,0 +1,21 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<!--
+<resources>
+  <Resource id="sample" type="javax.sql.DataSource">
+    JtaManaged = true
+    driverClassName = com.mysql.Driver
+    url = jdbc:derby://localhost:1527/sample
+    username = app
+    password = app
+  </Resource>
+</resources>
+-->
+<resources>
+    <Resource id="sample" type="DataSource">
+        JdbcDriver = org.apache.derby.jdbc.ClientDriver 
+        JdbcUrl = jdbc:derby://localhost:1527/sample 
+        UserName = app 
+        Password = app 
+        JtaManaged = true      
+    </Resource>
+</resources>

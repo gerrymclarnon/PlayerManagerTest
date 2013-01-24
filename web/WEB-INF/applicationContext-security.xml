@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">     
+
+    <!-- Required for @Pre and @Post Annotations, see http://static.springsource.org/spring-security/site/docs/3.1.x/reference/el-access.html -->
+    <global-method-security pre-post-annotations="enabled"/>
+
+    <http auto-config="false" pattern="/api/**" create-session="stateless" use-expressions="true">
+      <intercept-url pattern="/**" access="isAuthenticated()" />
+      <http-basic />
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="alexferguson" password="hairdrier" authorities="ROLE_MANAGER"/>
+                <user name="harryhaddock" password="fishyname" authorities="ROLE_PLAYER"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>
+    
