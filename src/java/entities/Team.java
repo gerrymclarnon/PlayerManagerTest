@@ -6,6 +6,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -26,24 +29,42 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @XmlRootElement
 public class Team implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(unique = true)
+    @Basic(optional = false)
+    @NotNull    
+    @Size(min = 1, max = 45)
+    private String uri;
+
     @Column
+    @Basic(optional = false)
+    @NotNull    
+    @Size(min = 1, max = 45)
     private String name;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Player> players;
 
-    public Collection<Player> getPlayers() {
-        return players;
+    public Long getId() {
+        return id;
     }
 
-    public void setPlayers(Collection<Player> players) {
-        this.players = players;
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+    
     public String getName() {
         return name;
     }
@@ -52,12 +73,12 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Collection<Player> getPlayers() {
+        return players;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPlayers(Collection<Player> players) {
+        this.players = players;
     }
 
     @Override
@@ -82,7 +103,7 @@ public class Team implements Serializable {
 
     @Override
     public String toString() {
-        return "customerdb.Team[ id=" + id + " ]";
+        return "Team{" + "id=" + id + ", uri=" + uri + ", name=" + name + '}';
     }
-    
+
 }

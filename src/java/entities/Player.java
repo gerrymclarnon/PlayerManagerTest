@@ -5,12 +5,15 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -27,7 +30,16 @@ public class Player implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
+    @Basic(optional = false)
+    @NotNull    
+    @Size(min = 1, max = 45)
+    private String uri;
+    
     @Column
+    @Basic(optional = false)
+    @NotNull    
+    @Size(min = 1, max = 45)
     private String name;
 
     @ManyToOne
@@ -59,7 +71,16 @@ public class Player implements Serializable {
         this.id = id;
     }
 
-    @Override
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+
+@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -81,7 +102,7 @@ public class Player implements Serializable {
 
     @Override
     public String toString() {
-        return "Player{" + "id=" + id + ", name=" + name + '}';
+        return "Player{" + "id=" + id + ", uri=" + uri + ", name=" + name + '}';
     }
 
 }

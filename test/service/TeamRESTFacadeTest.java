@@ -68,11 +68,13 @@ public class TeamRESTFacadeTest {
     @Test
     public void testCreateAllowed() {
         System.out.println("create");
-        Team entity = new Team();
-        entity.setName("Dream Team");
-        TestTeam instance = new TestTeam();
-        instance.setUserAsManager();
-        ClientResponse result = instance.create_JSON(entity);
+        Team team = new Team();
+        team.setName("Dream Team");
+        team.set
+        
+        TestTeam teamTestHelper = new TestTeam();
+        teamTestHelper.setUserAsManager();
+        ClientResponse result = teamTestHelper.create_JSON(team);
         assertEquals(ClientResponse.Status.CREATED, result.getClientResponseStatus());
     }
 
