@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package service.util;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -17,6 +17,8 @@ import entities.Player;
 import entities.Team;
 import java.text.MessageFormat;
 import java.util.Collection;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -67,7 +69,7 @@ public final class TeamTestHelper {
     private Client client;
     private User user;
 
-    private static final String BASE_URI = "http://localhost:8080/teamplayer/api";
+    private static final String BASE_URI = "https://localhost:8080/teamplayer/api";
     
     public static void main(String [] args) {
         TeamTestHelper testTeam = new TeamTestHelper();
@@ -97,6 +99,7 @@ public final class TeamTestHelper {
     public TeamTestHelper() {
         ClientConfig config = new DefaultClientConfig();
         config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        config.getProperties().put(com.sun.jersey.client.urlconnection.HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new com.sun.jersey.client.urlconnection.HTTPSProperties(getHostnameVerifier(), getSSLContext()));
         client = Client.create(config);
         setUser(TeamTestHelper.User.MANAGER);
         teamResource = client.resource(BASE_URI).path("team");
@@ -191,5 +194,40 @@ public final class TeamTestHelper {
         TeamTestHelper teamTestHelper = new TeamTestHelper();
         teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
         teamTestHelper.create(team);
+    }
+    
+    private HostnameVerifier getHostnameVerifier() {
+        return new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, javax.net.ssl.SSLSession sslSession) {
+                return true;
+            }
+        };
+    }
+
+    private SSLContext getSSLContext() {
+        javax.net.ssl.TrustManager x509 = new javax.net.ssl.X509TrustManager() {
+            @Override
+            public void checkClientTrusted(java.security.cert.X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {
+                return;
+            }
+
+            @Override
+            public void checkServerTrusted(java.security.cert.X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {
+                return;
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        };
+        SSLContext ctx = null;
+        try {
+            ctx = SSLContext.getInstance("SSL");
+            ctx.init(null, new javax.net.ssl.TrustManager[]{x509}, null);
+        } catch (java.security.GeneralSecurityException ex) {
+        }
+        return ctx;
     }
 }

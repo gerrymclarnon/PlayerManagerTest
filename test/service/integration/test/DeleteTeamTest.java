@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package service.integration;
+package service.integration.test;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -16,16 +16,16 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import service.TeamTestHelper;
+import service.util.TeamTestHelper;
 import static org.junit.Assert.*;
 
 /**
  *
  * @author u530619
  */
-public class ReadTeamTest {
+public class DeleteTeamTest {
     
-    public ReadTeamTest() {
+    public DeleteTeamTest() {
     }
    
     @BeforeClass
@@ -46,33 +46,48 @@ public class ReadTeamTest {
         TeamTestHelper.removeAllTestTeams();
     }
 
-      /**
-     * Test of count method, of class TeamRESTFacade.
+    /**
+     * Test of create method, of class TeamRESTFacade.
      */
     @Test
-    public void testCountUnauthorized() {
-        System.out.println("count allowed");
+    public void testDeleteForbidden() {
+        System.out.println("delete forbidden");
+
         TeamTestHelper teamTestHelper = new TeamTestHelper();
-        teamTestHelper.setUser(TeamTestHelper.User.UNKNOWN);
-        String expResult = "1";
+        teamTestHelper.setUser(TeamTestHelper.User.PLAYER);
+
         try {
-            assertEquals(expResult, teamTestHelper.count());
+            teamTestHelper.remove("1");
         } catch (UniformInterfaceException e) {
             ClientResponse result = e.getResponse();
-            assertEquals(ClientResponse.Status.UNAUTHORIZED, result.getClientResponseStatus());
+            assertEquals(ClientResponse.Status.FORBIDDEN, result.getClientResponseStatus());
         }
-    }
-
-    /**
-     * Test of count method, of class TeamRESTFacade.
-     */
-    @Test
-    public void testCountAllowed() {
-        System.out.println("count allowed");
-        TeamTestHelper teamTestHelper = new TeamTestHelper();
-        teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
+        
         String expResult = "1";
         String result = teamTestHelper.count();
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of create method, of class TeamRESTFacade.
+     */
+    @Test
+    public void testDeleteAllowed() {
+        System.out.println("delete allowed");
+        
+        TeamTestHelper teamTestHelper = new TeamTestHelper();
+        teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
+
+        GenericType<Collection<Team>> genericType = new GenericType<Collection<Team>>(){};
+
+        Collection<Team> teams = teamTestHelper.findAll(genericType);
+        Team team = teams.toArray(new Team[0])[0];
+        
+        teamTestHelper.remove(team.getId().toString());
+        
+        String expResult = "0";
+        String result = teamTestHelper.count();
+        assertEquals(expResult, result);
+    }
+
 }

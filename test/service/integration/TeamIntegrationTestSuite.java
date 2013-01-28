@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package service.suite;
+package service.integration;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,9 +16,9 @@ import org.junit.runners.Suite;
  * @author gerrymclarnon
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({service.integration.CreateTeamTest.class, 
-                    service.integration.ReadTeamTest.class, 
-                    service.integration.DeleteTeamTest.class})
+@Suite.SuiteClasses({service.integration.test.CreateTeamTest.class, 
+                    service.integration.test.ReadTeamTest.class, 
+                    service.integration.test.DeleteTeamTest.class})
 public class TeamIntegrationTestSuite {
 
     @BeforeClass
