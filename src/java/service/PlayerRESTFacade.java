@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Singleton
 @Autowire
 public class PlayerRESTFacade {
-    @PersistenceContext(unitName = "PlayerManagerPU")
+    @PersistenceContext(unitName = "TeamPlayerPU")
     protected EntityManager entityManager;
 
     public PlayerRESTFacade() {

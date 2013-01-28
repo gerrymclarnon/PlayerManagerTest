@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package service.integration;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -16,6 +16,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import service.TeamTestHelper;
 import static org.junit.Assert.*;
 
 /**
@@ -37,10 +38,12 @@ public class DeleteTeamTest {
     
     @Before
     public void setUp() {
+        TeamTestHelper.createAllTestTeams();
     }
     
     @After
     public void tearDown() {
+        TeamTestHelper.removeAllTestTeams();
     }
 
     /**
@@ -74,7 +77,13 @@ public class DeleteTeamTest {
         
         TeamTestHelper teamTestHelper = new TeamTestHelper();
         teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
-        teamTestHelper.remove("1");
+
+        GenericType<Collection<Team>> genericType = new GenericType<Collection<Team>>(){};
+
+        Collection<Team> teams = teamTestHelper.findAll(genericType);
+        Team team = teams.toArray(new Team[0])[0];
+        
+        teamTestHelper.remove(team.getId().toString());
         
         String expResult = "0";
         String result = teamTestHelper.count();

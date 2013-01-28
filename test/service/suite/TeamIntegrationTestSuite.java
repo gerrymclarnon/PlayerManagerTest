@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package service.suite;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,14 +16,13 @@ import org.junit.runners.Suite;
  * @author gerrymclarnon
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({service.CreateTeamTest.class, 
-                    service.ReadTeamTest.class, 
-                    service.DeleteTeamTest.class})
-public class TeamTestSuite {
+@Suite.SuiteClasses({service.integration.CreateTeamTest.class, 
+                    service.integration.ReadTeamTest.class, 
+                    service.integration.DeleteTeamTest.class})
+public class TeamIntegrationTestSuite {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        System.out.println("Deploy App with PersistenceUnit set to PMDEV01 with schema drop and create option");
     }
 
     @AfterClass

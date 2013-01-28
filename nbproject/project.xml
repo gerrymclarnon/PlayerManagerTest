@@ -51,7 +51,7 @@
             </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/web-project/3">
-            <name>PlayerManagerTest</name>
+            <name>TeamPlayerV1</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">

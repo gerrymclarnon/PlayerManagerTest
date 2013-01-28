@@ -14,10 +14,10 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
 import entities.Player;
+import entities.Team;
 import java.text.MessageFormat;
 import java.util.Collection;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * Jersey REST client generated for REST resource:TeamRESTFacade [team]<br>
@@ -31,11 +31,13 @@ import javax.ws.rs.core.Response;
  *
  * @author U530619
  */
-public class TeamTestHelper {
+public final class TeamTestHelper {
     
     public enum User {
 
-        MANAGER("alexferguson", "hairdrier"), PLAYER("harryhaddock", "fishyname");
+        MANAGER("alexferguson", "hairdrier"), 
+        PLAYER("harryhaddock", "fishyname"), 
+        UNKNOWN("", "");
         
         private final String username;
         private final String password;
@@ -65,7 +67,7 @@ public class TeamTestHelper {
     private Client client;
     private User user;
 
-    private static final String BASE_URI = "http://localhost:8080/playermanager/api";
+    private static final String BASE_URI = "http://localhost:8080/teamplayer/api";
     
     public static void main(String [] args) {
         TeamTestHelper testTeam = new TeamTestHelper();
@@ -96,15 +98,15 @@ public class TeamTestHelper {
         ClientConfig config = new DefaultClientConfig();
         config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         client = Client.create(config);
-        setUsernamePassword(MANAGER_USERNAME, MANAGER_PASSWORD);
+        setUser(TeamTestHelper.User.MANAGER);
         teamResource = client.resource(BASE_URI).path("team");
         playerResource = client.resource(BASE_URI).path("team");
     }
 
-    public <T> T findAllPlayers(GenericType<T> genericType, String id) throws UniformInterfaceException {
+    public <T> T findAllPlayers(GenericType<T> responseType, String id) throws UniformInterfaceException {
         WebResource resource = teamResource;
         resource = resource.path(java.text.MessageFormat.format("{0}/players", new Object[]{id}));
-        return resource.accept(MediaType.APPLICATION_JSON).get(genericType);
+        return resource.accept(MediaType.APPLICATION_JSON).get(responseType);
     }
     
     public String count() throws UniformInterfaceException {
@@ -117,7 +119,7 @@ public class TeamTestHelper {
         teamResource.path(MessageFormat.format("{0}", new Object[]{id})).delete();
     }
 
-    public <T> T findAll(Class<T> responseType) throws UniformInterfaceException {
+    public <T> T findAll(GenericType<T> responseType) throws UniformInterfaceException {
         WebResource resource = teamResource;
         return resource.accept(MediaType.APPLICATION_JSON).get(responseType);
     }
@@ -163,5 +165,31 @@ public class TeamTestHelper {
 
     public final void setUsernamePassword(String username, String password) {
         client.addFilter(new HTTPBasicAuthFilter(username, password));
+    }
+    
+    public static void removeAllTestTeams() {
+        GenericType<Collection<Team>> genericType = new GenericType<Collection<Team>>(){};
+
+        TeamTestHelper teamTestHelper = new TeamTestHelper();
+        teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
+        
+        Collection<Team> teams = teamTestHelper.findAll(genericType);
+        for (Team team : teams) {
+            teamTestHelper.remove(team.getId().toString());
+        }
+        
+        Team team = new Team();
+        team.setName("Dream Team");
+        team.setUri("dreamteam");
+    }
+
+    public static void createAllTestTeams() {
+        Team team = new Team();
+        team.setName("Dream Team");
+        team.setUri("dreamteam");
+        
+        TeamTestHelper teamTestHelper = new TeamTestHelper();
+        teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
+        teamTestHelper.create(team);
     }
 }

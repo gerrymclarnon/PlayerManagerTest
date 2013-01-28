@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package service.integration;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -15,6 +15,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import service.TeamTestHelper;
 import static org.junit.Assert.*;
 
 /**
@@ -36,10 +37,12 @@ public class CreateTeamTest {
     
     @Before
     public void setUp() {
+        TeamTestHelper.removeAllTestTeams();
     }
     
     @After
     public void tearDown() {
+        TeamTestHelper.removeAllTestTeams();
     }
 
     /**
