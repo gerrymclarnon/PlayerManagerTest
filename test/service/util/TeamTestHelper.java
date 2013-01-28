@@ -69,7 +69,7 @@ public final class TeamTestHelper {
     private Client client;
     private User user;
 
-    private static final String BASE_URI = "https://localhost:8080/teamplayer/api";
+    private static final String BASE_URI = "http://localhost:8080/teamplayer/api";
     
     public static void main(String [] args) {
         TeamTestHelper testTeam = new TeamTestHelper();
