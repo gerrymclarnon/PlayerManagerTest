@@ -50,8 +50,8 @@ public class ReadTeamTest {
      * Test of count method, of class TeamRESTFacade.
      */
     @Test
-    public void testCountUnauthorized() {
-        System.out.println("count allowed");
+    public void testTeamCountUnauthorized() {
+        System.out.println("team count allowed");
         TeamTestHelper teamTestHelper = new TeamTestHelper();
         teamTestHelper.setUser(TeamTestHelper.User.UNKNOWN);
         String expResult = "1";
@@ -67,12 +67,58 @@ public class ReadTeamTest {
      * Test of count method, of class TeamRESTFacade.
      */
     @Test
-    public void testCountAllowed() {
-        System.out.println("count allowed");
+    public void testTeamCountAllowed() {
+        System.out.println("team count allowed");
         TeamTestHelper teamTestHelper = new TeamTestHelper();
         teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
         String expResult = "1";
         String result = teamTestHelper.count();
         assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testTeamPlayersCount() {
+        System.out.println("team players count allowed");
+        TeamTestHelper teamTestHelper = new TeamTestHelper();
+
+        GenericType<Collection<Team>> teamCollectionType = new GenericType<Collection<Team>>(){};
+        Collection<Team> teams = teamTestHelper.findAll(teamCollectionType);
+        
+        for (Team team : teams) {
+            if (team.getUri().equalsIgnoreCase("dreamteam")) {
+                GenericType<Collection<Player>> playerCollectionType = new GenericType<Collection<Player>>(){};
+                Collection<Player> players = teamTestHelper.findAllPlayers(playerCollectionType, team.getId().toString());
+
+                String expResult = "1";
+                String result = String.valueOf(players.size());
+                assertEquals(expResult, result);
+            }
+        }
+    }
+    
+    @Test
+    public void testTeamPlayersDetails() {
+        System.out.println("team player details allowed");
+        TeamTestHelper teamTestHelper = new TeamTestHelper();
+
+        GenericType<Collection<Team>> teamCollectionType = new GenericType<Collection<Team>>(){};
+        Collection<Team> teams = teamTestHelper.findAll(teamCollectionType);
+        
+        for (Team team : teams) {
+            if (team.getUri().equalsIgnoreCase(TeamTestHelper.DREAMTEAM_URI)) {
+                GenericType<Collection<Player>> playerCollectionType = new GenericType<Collection<Player>>(){};
+                Collection<Player> players = teamTestHelper.findAllPlayers(playerCollectionType, team.getId().toString());
+
+                for (Player player : players) {
+                    if (player.getUri().equalsIgnoreCase(TeamTestHelper.HARRY_HADDOCK_URI)) {
+                        String expResult = TeamTestHelper.HARRY_HADDOCK_NAME;
+                        String result = String.valueOf(player.getName());
+                        assertEquals(expResult, result);
+                    }
+                }
+                
+                break;
+            }
+        }
     }
 }

@@ -79,7 +79,6 @@ public class DeleteTeamTest {
         teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
 
         GenericType<Collection<Team>> genericType = new GenericType<Collection<Team>>(){};
-
         Collection<Team> teams = teamTestHelper.findAll(genericType);
         Team team = teams.toArray(new Team[0])[0];
         

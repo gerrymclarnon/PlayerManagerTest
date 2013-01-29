@@ -16,6 +16,7 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import entities.Player;
 import entities.Team;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -34,6 +35,10 @@ import javax.ws.rs.core.MediaType;
  * @author U530619
  */
 public final class TeamTestHelper {
+    public static final String DREAM_TEAM_NAME = "Dream Team";
+    public static final String DREAMTEAM_URI = "dreamteam";
+    public static final String HARRY_HADDOCK_NAME = "Harry Haddock";
+    public static final String HARRY_HADDOCK_URI = "harry_haddock";
     
     public enum User {
 
@@ -69,7 +74,7 @@ public final class TeamTestHelper {
     private Client client;
     private User user;
 
-    private static final String BASE_URI = "http://localhost:8080/teamplayer/api";
+    private static final String BASE_URI = "http://localhost/api";
     
     public static void main(String [] args) {
         TeamTestHelper testTeam = new TeamTestHelper();
@@ -182,14 +187,20 @@ public final class TeamTestHelper {
         }
         
         Team team = new Team();
-        team.setName("Dream Team");
-        team.setUri("dreamteam");
+        team.setName(DREAM_TEAM_NAME);
+        team.setUri(DREAMTEAM_URI);
     }
 
     public static void createAllTestTeams() {
         Team team = new Team();
-        team.setName("Dream Team");
-        team.setUri("dreamteam");
+        team.setName(DREAM_TEAM_NAME);
+        team.setUri(DREAMTEAM_URI);
+        Collection<Player> players = new ArrayList<Player>();
+        Player harryHaddock = new Player();
+        harryHaddock.setName(HARRY_HADDOCK_NAME);
+        harryHaddock.setUri(HARRY_HADDOCK_URI);
+        players.add(harryHaddock);
+        team.setPlayers(players);
         
         TeamTestHelper teamTestHelper = new TeamTestHelper();
         teamTestHelper.setUser(TeamTestHelper.User.MANAGER);
