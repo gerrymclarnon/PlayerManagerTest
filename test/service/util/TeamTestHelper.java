@@ -42,7 +42,9 @@ public final class TeamTestHelper {
     
     public enum User {
 
-        MANAGER("alexferguson", "hairdrier"), 
+//        MANAGER("alexferguson", "hairdrier"), 
+//        MANAGER("alexferguson", "YWxleGZlcmd1c29uOmhhaXJkcmllcg=="), 
+        MANAGER("alexferguson", "password"), 
         PLAYER("harryhaddock", "fishyname"), 
         UNKNOWN("", "");
         
@@ -74,7 +76,7 @@ public final class TeamTestHelper {
     private Client client;
     private User user;
 
-    private static final String BASE_URI = "http://localhost/api";
+    private static final String BASE_URI = "https://localhost/api";
     
     public static void main(String [] args) {
         TeamTestHelper testTeam = new TeamTestHelper();
@@ -104,7 +106,7 @@ public final class TeamTestHelper {
     public TeamTestHelper() {
         ClientConfig config = new DefaultClientConfig();
         config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        //config.getProperties().put(com.sun.jersey.client.urlconnection.HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new com.sun.jersey.client.urlconnection.HTTPSProperties(getHostnameVerifier(), getSSLContext()));
+        config.getProperties().put(com.sun.jersey.client.urlconnection.HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new com.sun.jersey.client.urlconnection.HTTPSProperties(getHostnameVerifier(), getSSLContext()));
         client = Client.create(config);
         setUser(TeamTestHelper.User.MANAGER);
         teamResource = client.resource(BASE_URI).path("team");

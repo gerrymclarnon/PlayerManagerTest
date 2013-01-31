@@ -17,9 +17,14 @@
 
     <authentication-manager>
         <authentication-provider>
+            <password-encoder hash="sha" />
             <user-service>
+                <!-- 
                 <user name="alexferguson" password="hairdrier" authorities="ROLE_MANAGER"/>
                 <user name="harryhaddock" password="fishyname" authorities="ROLE_PLAYER"/>
+                -->
+                <user name="alexferguson" password="0b794bd83586521a637866a64d2447548fb44479" authorities="ROLE_MANAGER"/>
+                <user name="harryhaddock" password="3283d85e12873d735efacbc0b36151f649a49f20" authorities="ROLE_PLAYER"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>
